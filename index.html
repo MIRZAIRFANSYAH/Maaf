@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maaf Sayang ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffc4e1 50%, #ffb3d9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff69b4;
+            animation: float 4s ease-in infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .envelope-wrapper.show {
+            opacity: 1;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-back {
+            width: 100%;
+            height: 100%;
+            background: #ffb3d9;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+        }
+
+        .envelope-flap {
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 120px solid #ff91c7;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top center;
+            transition: transform 1s ease;
+            z-index: 3;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .heart-seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: #ff1493;
+            z-index: 4;
+            transition: all 0.5s;
+            text-shadow: 0 5px 15px rgba(255, 20, 147, 0.5);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .envelope.open .heart-seal {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        .letter {
+            width: 280px;
+            height: 350px;
+            background: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            opacity: 0;
+            transition: all 1s ease;
+            z-index: 2;
+        }
+
+        .envelope.open .letter {
+            opacity: 1;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 400px;
+        }
+
+        .envelope.open .envelope-back,
+        .envelope.open .envelope-flap,
+        .envelope.open .heart-seal {
+            display: none;
+        }
+
+        .letter-content {
+            text-align: center;
+            color: #ff1493;
+            font-size: 18px;
+            line-height: 1.8;
+            display: none;
+        }
+
+        .envelope.open .letter-content {
+            display: block;
+        }
+
+        .typed-text {
+            border-right: 2px solid #ff1493;
+            white-space: pre-wrap;
+            overflow: hidden;
+            display: inline;
+        }
+
+        .music-button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .music-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.6);
+        }
+
+        .music-button:active {
+            transform: translateY(0);
+        }
+
+        .music-button.show {
+            display: inline-block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .start-music-button {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.5);
+            transition: all 0.3s;
+            z-index: 100;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .start-music-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.7);
+        }
+
+        .start-music-button.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <button class="start-music-button" id="startMusicButton">🎵 Putar Musik</button>
+    
+    <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="envelope" id="envelope">
+            <div class="envelope-back"></div>
+            <div class="envelope-flap"></div>
+            <div class="heart-seal">❤️</div>
+            <div class="letter">
+                <div class="letter-content" id="letterContent">
+                    <span class="typed-text" id="typedText"></span>
+                    <br>
+                    <button class="music-button" id="musicButton">🎵 Putar Musik</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const text = "Maaf sayang atas kelakuan ku akhir akhir ini yang egois, maaf gak ngerti in kamu, memang aku yang salah karna nge diemin kamu, sekali lagi minta maaf sayanggg 💕💕";
+        let index = 0;
+        let isTyping = false;
+        const audio = new Audio('music.mp3');
+
+        document.getElementById('startMusicButton').addEventListener('click', function() {
+            audio.play();
+            this.classList.add('hide');
+            setTimeout(() => {
+                this.style.display = 'none';
+                document.getElementById('envelopeWrapper').classList.add('show');
+            }, 500);
+        });
+
+        document.getElementById('envelope').addEventListener('click', function() {
+            if (!this.classList.contains('open')) {
+                this.classList.add('open');
+                setTimeout(() => {
+                    if (!isTyping) {
+                        typeText();
+                    }
+                }, 1000);
+            }
+        });
+
+        function typeText() {
+            isTyping = true;
+            const typedElement = document.getElementById('typedText');
+            
+            if (index < text.length) {
+                typedElement.textContent += text.charAt(index);
+                index++;
+                setTimeout(typeText, 100);
+            } else {
+                typedElement.style.borderRight = 'none';
+                document.getElementById('musicButton').classList.add('show');
+            }
+        }
+
+        document.getElementById('musicButton').addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play();
+                this.textContent = '⏸️ Pause Musik';
+            } else {
+                audio.pause();
+                this.textContent = '🎵 Putar Musik';
+            }
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 300);
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() + 's';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        setInterval(createSparkle, 500);
+
+        for(let i = 0; i < 20; i++) {
+            setTimeout(createHeart, i * 100);
+        }
+    </script>
+</body>
+</html>
